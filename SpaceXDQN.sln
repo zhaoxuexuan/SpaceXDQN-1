@@ -1,0 +1,23 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27004.2010
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "LandingGame", "LandingGame\LandingGame.pyproj", "{C99C0668-5EE0-40AF-9BBF-DBE836FAB55F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C99C0668-5EE0-40AF-9BBF-DBE836FAB55F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C99C0668-5EE0-40AF-9BBF-DBE836FAB55F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B367AE98-F6E8-45DB-947A-D01E4BEE2360}
+	EndGlobalSection
+EndGlobal
