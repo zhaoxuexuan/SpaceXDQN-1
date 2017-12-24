@@ -14,19 +14,20 @@ pygame.event.set_allowed([QUIT, VIDEORESIZE, KEYDOWN, KEYUP, MOUSEBUTTONDOWN])
 # Scales
 unitspeed = screen_width / 5
 unitaccle = unitspeed
+gravity = 0.5
 
 # Game settings
 board = ((screen_width / 5 * 2, screen_height - 10), (screen_width / 5, 10))
 landing_veltol = 0.5 * unitspeed
-x, y = 0, 0
+x, y = 50, 50
 u_x, u_y = 0, screen_height / 5
 
 # Game propeties
 gamewin = gamehit = gameover = False
 clock = pygame.time.Clock()
 past_time = 0
-acc_left, acc_right= 0, 0
-acc_x = 0
+acc_left, acc_right, acc_up = 0, 0, 0
+acc_x, acc_y = 0, 0
 trace = [(x, y), (x, y)]
 
 while True:
@@ -45,10 +46,12 @@ while True:
                 acc_left = -1
             elif event.key == K_RIGHT:
                 acc_right = 1
-            elif event.key == K_SPACE:
+            elif event.key == K_UP:
+                acc_up = -1
+            elif event.key == K_DOWN or event.key == K_SPACE:
                 x, y = 0, 0
-                acc_left, acc_right= 0, 0
-                acc_x = 0
+                acc_left, acc_right, acc_up = 0, 0, 0
+                acc_x, acc_y = 0, 0
                 u_x, u_y = 0, screen_height / 5
                 trace = [(x, y), (x, y)]
                 gamehit = gameover = gamewin = False
@@ -58,12 +61,15 @@ while True:
                 acc_left = 0
             elif event.key == K_RIGHT:
                 acc_right = 0
+            elif event.key == K_UP:
+                acc_up = 0
 
     if gamehit or gameover or gamewin:
         continue
 
     dt = clock.tick() / 1000.0
     u_x = u_x + (acc_left + acc_right) * unitaccle * dt
+    u_y = u_y + (acc_up + gravity) * unitaccle * dt
     x += u_x * dt
     y += u_y * dt
 
@@ -74,7 +80,7 @@ while True:
 
     if y >= board[0][1]:
         if x >= board[0][0] and x <= board[0][0] + board[1][0]:
-            if abs(u_x) <= 0.5 * unitspeed:
+            if abs(u_x) <= 0.5 * unitspeed and abs(u_y) <= 0.1 * unitspeed:
                 gamewin = True
             else:
                 gamehit = True
@@ -95,7 +101,8 @@ while True:
         text_surface = myfont.render(str("Game over"), True, (0,0,0))
         screen.blit(text_surface, (0, screen_height / 2))
     elif gamehit:
-        text_surface = myfont.render(str("You gota hit with Ux : ") + str(u_x / unitspeed), True, (0,0,0))
+        text_surface = myfont.render(str("You gota hit with Ux : ") + str(u_x / unitspeed)
+        + str(" and Uy : ") + str(u_y / unitspeed), True, (0,0,0))
         screen.blit(text_surface, (0, screen_height / 2))
     elif gamewin:
         text_surface = myfont.render(str("You win!"), True, (0,0,0))
