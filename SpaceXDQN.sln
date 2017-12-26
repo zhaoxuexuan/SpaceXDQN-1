@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.27004.2010
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "LandingGame", "LandingGame\LandingGame.pyproj", "{C99C0668-5EE0-40AF-9BBF-DBE836FAB55F}"
 EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "CartPole", "CartPole\CartPole.pyproj", "{F6E61DB0-930A-4C03-A10B-77742D9DF6A5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,6 +15,8 @@ Global
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{C99C0668-5EE0-40AF-9BBF-DBE836FAB55F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C99C0668-5EE0-40AF-9BBF-DBE836FAB55F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6E61DB0-930A-4C03-A10B-77742D9DF6A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6E61DB0-930A-4C03-A10B-77742D9DF6A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
