@@ -130,6 +130,14 @@ class DeepQNetwork:
             action = np.random.randint(0, self.n_actions)
         return action
 
+    def test_action(self, observation):
+        observation = observation[np.newaxis, :]
+
+        actions_value = self.sess.run(self.q_eval, feed_dict={self.s: observation})
+        action = np.argmax(actions_value)
+
+        return action
+
     def learn(self):
         # check to replace target parameters
         if self.learn_step_counter % self.replace_target_iter == 0:

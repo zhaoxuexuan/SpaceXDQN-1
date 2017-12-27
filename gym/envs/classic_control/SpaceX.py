@@ -18,16 +18,16 @@ class SpaceXEnv(gym.Env):
     }
 
     def __init__(self):
-        self.gravity = 9.8
+        self.gravity = 10
         self.accle_mag = 0.5 * self.gravity
         self.board = [-15, 15]
-        self.tau = 0.02  # seconds between state updates
+        self.tau = 0.2  # seconds between state updates
         self.time = 0
 
         # Angle at which to fail the episode
         self.u_threshold = 0.5
         self.x_threshold = 50
-        self.t_threshold = 10
+        self.t_threshold = 4
 
         # Angle limit set to 2 * theta_threshold_radians so failing observation is still within bounds
         high = np.array([
@@ -56,7 +56,7 @@ class SpaceXEnv(gym.Env):
         x_dot = x_dot + self.tau * accle
         self.time += self.tau
         self.state = (x, x_dot)
-        on_board = -self.board[0] < x < self.board[1]
+        on_board = self.board[0] < x < self.board[1]
         safe_speed = abs(x_dot) < self.u_threshold
         done = x < -self.x_threshold \
             or x > self.x_threshold \
@@ -64,12 +64,18 @@ class SpaceXEnv(gym.Env):
             or (on_board and safe_speed)
         done = bool(done)
 
+        reward = 0
+
         if not done:
-            reward = -1.0
-        elif on_board and safe_speed:
-            reward = 1000
+            if x_dot > 0:
+                reward += 1
+            if on_board:
+                reward += 10
+        elif on_board:
+            reward += 500
+            if safe_speed: reward += 500
         else:
-            reward = -100
+            reward += -500
 
         return np.array(self.state), reward, done, {}
 
@@ -114,8 +120,8 @@ class SpaceXEnv(gym.Env):
         x = self.state
         boardx = screen_width / 2.0
         massptx = x[0] * scale + screen_width / 2.0
-        self.boardtrans.set_translation(boardx, board_height)
-        self.masspttrans.set_translation(massptx, (0.9 - self.time / self.t_threshold) * screen_height)
+        self.boardtrans.set_translation(boardx, board_height/2.0)
+        self.masspttrans.set_translation(massptx, (1 - self.time / self.t_threshold) * screen_height)
 
         return self.viewer.render(return_rgb_array=mode == 'rgb_array')
 
