@@ -21,13 +21,13 @@ class SpaceXEnv(gym.Env):
         self.gravity = 10
         self.accle_mag = 0.5 * self.gravity
         self.board = [-15, 15]
-        self.tau = 0.2  # seconds between state updates
+        self.tau = 0.05  # seconds between state updates
         self.time = 0
 
         # Angle at which to fail the episode
-        self.u_threshold = 0.5
+        self.u_threshold = 3.0
         self.x_threshold = 50
-        self.t_threshold = 4
+        self.t_threshold = 5
 
         # Angle limit set to 2 * theta_threshold_radians so failing observation is still within bounds
         high = np.array([
@@ -56,7 +56,8 @@ class SpaceXEnv(gym.Env):
         x_dot = x_dot + self.tau * accle
         self.time += self.tau
         self.state = (x, x_dot)
-        on_board = self.board[0] < x < self.board[1]
+        on_board = self.board[0] < x < self.board[1] and \
+                   abs(self.time - self.t_threshold) < 2 * self.tau
         safe_speed = abs(x_dot) < self.u_threshold
         done = x < -self.x_threshold \
             or x > self.x_threshold \

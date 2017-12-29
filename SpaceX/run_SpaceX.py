@@ -7,6 +7,8 @@ gym: 0.7.3
 
 
 import gym
+import matplotlib.pyplot as plt
+import numpy as np
 from RL_brain import DeepQNetwork
 
 env = gym.make('SpaceX-v0')
@@ -26,7 +28,7 @@ RL = DeepQNetwork(n_actions=env.action_space.n,
 total_steps = 0
 
 
-for i_episode in range(1000):
+for i_episode in range(10000):
 
     observation = env.reset()
     ep_r = 0
@@ -58,9 +60,11 @@ for i_test in range(1):
 
     observation = env.reset()
     ep_r = 0
+    action_hist = []
     while True:
         env.render()
         action = RL.test_action(observation)
+        action_hist.append(action)
         observation_, reward, done, info = env.step(action)
         ep_r += reward
         if done:
@@ -71,5 +75,11 @@ for i_test in range(1):
 
         observation = observation_
 
-print('Ave reward: ', ep_ave / 1)
-RL.plot_cost()
+print('Ave reward: ', ep_ave)
+# Plot action
+plt.plot(np.arange(len(action_hist)), action_hist)
+plt.ylabel('Action')
+plt.xlabel('Steps')
+plt.show()
+
+#RL.plot_cost()
