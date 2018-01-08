@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>2cafed3e-0b96-47d1-b173-1073084c3483</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>run_SpaceX.py</StartupFile>
+    <StartupFile>test_SpaceX.py</StartupFile>
     <SearchPath>..\..\SpaceXDQN</SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
@@ -23,6 +23,9 @@
   <ItemGroup>
     <Compile Include="RL_brain.py" />
     <Compile Include="run_SpaceX.py" />
+    <Compile Include="test_SpaceX.py">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <InterpreterReference Include="Global|PythonCore|3.6" />

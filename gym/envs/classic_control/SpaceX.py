@@ -69,20 +69,18 @@ class SpaceXEnv(gym.Env):
 
         if not done:
             if x_dot > 0:
-                reward += 1
-            if on_board:
-                reward += 10
+                reward += 0.0
         elif on_board:
-            reward += 500
-            if safe_speed: reward += 500
+            reward += 2
+            if safe_speed: reward += 2
         else:
-            reward += -500
+            reward += 0
 
         return np.array(self.state), reward, done, {}
 
     def _reset(self):
         # self.state = self.np_random.uniform(low=-0.05, high=0.05, size=(4,))
-        self.state = np.array([-40, 0])
+        self.state = np.array([-40+np.random.uniform(-5, 5), 0])
         self.steps_beyond_done = None
         self.time = 0
         return np.array(self.state)
