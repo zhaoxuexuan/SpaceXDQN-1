@@ -21,6 +21,8 @@ class SpaceXEnv(gym.Env):
         self.gravity = 10
         self.accle_mag = 0.5 * self.gravity
         self.board = [-15, 15]
+        self.x_board=0 #final position of board
+        self.x_board_dot=0 #final speed of board
         self.tau = 0.05  # seconds between state updates
         self.time = 0
 
@@ -58,7 +60,7 @@ class SpaceXEnv(gym.Env):
         self.state = (x, x_dot)
         on_board = self.board[0] < x < self.board[1] and \
                    abs(self.time - self.t_threshold) < 2 * self.tau
-        safe_speed = abs(x_dot) < self.u_threshold
+        safe_speed = abs(x_dot-self.x_board_dot) < self.u_threshold
         done = x < -self.x_threshold \
             or x > self.x_threshold \
             or self.time > self.t_threshold \
@@ -81,6 +83,11 @@ class SpaceXEnv(gym.Env):
     def _reset(self):
         # self.state = self.np_random.uniform(low=-0.05, high=0.05, size=(4,))
         self.state = np.array([-40+np.random.uniform(-5, 5), 0])
+        self.x_board = np.random.uniform(-5, 5)
+        self.x_board_dot = np.random.uniform(-2,2)
+        # print("x_board:",self.x_board)
+        # print("x_board_dot:",self.x_board_dot)
+        self.board = [-15+self.x_board, 15+self.x_board]
         self.steps_beyond_done = None
         self.time = 0
         return np.array(self.state)
@@ -98,11 +105,13 @@ class SpaceXEnv(gym.Env):
         world_width = self.x_threshold * 2
         scale = screen_width / world_width
         board_height = 10.0
+        board_width = 30.0
 
         if self.viewer is None:
             from gym.envs.classic_control import rendering
             self.viewer = rendering.Viewer(screen_width, screen_height)
-            l, r, t, b = self.board[0] * scale, self.board[1] * scale, board_height / 2, -board_height / 2
+            #l, r, t, b = self.board[0] * scale, self.board[1] * scale, board_height / 2, -board_height / 2
+            l, r, t, b = -board_width/2 * scale, board_width/2 * scale, board_height / 2, -board_height / 2
             board_area = rendering.FilledPolygon([(l, b), (l, t), (r, t), (r, b)])
             self.boardtrans = rendering.Transform()
             board_area.add_attr(self.boardtrans)
@@ -119,7 +128,7 @@ class SpaceXEnv(gym.Env):
         x = self.state
         boardx = screen_width / 2.0
         massptx = x[0] * scale + screen_width / 2.0
-        self.boardtrans.set_translation(boardx, board_height/2.0)
+        self.boardtrans.set_translation(boardx+self.x_board, board_height/2.0)
         self.masspttrans.set_translation(massptx, (1 - self.time / self.t_threshold) * screen_height)
 
         return self.viewer.render(return_rgb_array=mode == 'rgb_array')
