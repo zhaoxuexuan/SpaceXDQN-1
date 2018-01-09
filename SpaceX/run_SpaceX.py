@@ -13,7 +13,7 @@ from RL_brain import PolicyGradient
 import matplotlib.pyplot as plt
 
 I_TEACH = 500
-DISPLAY_REWARD_THRESHOLD = 2.5  # renders environment if total episode reward is greater then this threshold
+DISPLAY_REWARD_THRESHOLD = 2.5  # renders environment if total episode reward is greater than this threshold
 RENDER = False  # rendering wastes time
 
 env = gym.make('SpaceX-v0')
@@ -31,18 +31,20 @@ RL = PolicyGradient(
     learning_rate=0.001,
     reward_decay=0.99,
     save_path=".\\network.nt",
-    # output_graph=True,
+     #output_graph=True,
 )
 
-for i_episode in range(3000):
+for i_episode in range(2000):
 
-    observation = env.reset()
+    observation = env.reset() #observation=[x,x_dot]
+    target = env.x_board, env.x_board_dot
 
     while True:
+        # if i_episode >450 : RENDER = True
         if RENDER: env.render()
 
         if i_episode < I_TEACH:
-            action = 1 if observation[1] * observation[1] / 20.0 + observation[0] < -8.75 else 0
+            action = 1 if (observation[1]-target[1])*(observation[1]-target[1]) / 20.0 + observation[0] - target[0]< -8.75 else 0
         else:
             action = RL.choose_action(observation)
 
@@ -113,7 +115,7 @@ for i_episode in range(100):
     reward_hist = []
 
     while True:
-        #env.render()
+        env.render()
 
         action = RL.test_action(observation)
 
