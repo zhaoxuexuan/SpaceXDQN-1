@@ -1,0 +1,14 @@
+git branch #查看分支
+git checkout -b feature-A #创建名为feature-A的分支
+touch test.php #新建文件
+git add test.php #向暂存区中添加文件
+mkdir git-tutorial #新建名为git-tutorial的目录
+git init #初始化仓库
+git status #查看仓库状态
+git commit -m "first commit" #将暂存区文件保存到仓库的历史记录
+git checkout master #切换到master分支
+git branch -d feature-A #删除名为feature-A的分支
+git remote -v #查看与当前本地目录关联的远程仓库
+git remote remove origin #取消本地目录下关联的远程库
+git remote add origin https://github.com/zhaoxuexuan/SpaceXDQN
+#在本地目录下关联远程库
